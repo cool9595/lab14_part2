@@ -70,30 +70,18 @@ HOST = '127.0.0.1'
 PORT = 9096
 
 
-def handle_client(conn, addr):
-    """Обработка одного клиента в отдельном процессе."""
+def handle_client(client_sock, addr):
+    print(f"[PID {os.getpid()}] Клиент {addr} подключился")
+    
+    data = client_sock.recv(1024)
+    if data:
+        msg = data.decode().strip()
+        print(f"[PID {os.getpid()}] Получено: '{msg}'")
+        client_sock.send(data)
+    
+    client_sock.close()
+    print(f"[PID {os.getpid()}] Соединение закрыто")
 
-    # TODO 9: Реализуйте обработку клиента:
-    #
-    # 1. Выведите PID текущего процесса:
-    #        print(f"[PID {os.getpid()}] Клиент {addr} подключён")
-    #
-    # 2. Прочитайте данные от клиента:
-    #        data = conn.recv(1024)
-    #
-    # 3. Выведите полученное сообщение:
-    #        print(f"[PID {os.getpid()}] Получено: '{data.decode()}'")
-    #
-    # 4. Отправьте данные обратно (эхо):
-    #        conn.sendall(data)
-    #
-    # 5. Закройте соединение:
-    #        conn.close()
-    #        print(f"[PID {os.getpid()}] Клиент {addr} отключён")
-
-    # --- Ваш код здесь ---
-    pass
-    # --- Конец вашего кода ---
 
 
 if __name__ == '__main__':
